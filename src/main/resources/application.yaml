@@ -1,0 +1,25 @@
+server:
+  port: 7054
+  servlet:
+    context-path: /
+    session:
+      timeout: 21600
+
+spring:
+  jpa:
+    properties:
+      hibernate:
+        ddl-auto: update
+        hibernate:
+          dialect: org.hibernate.dialect.MySQLDialect
+          temp:
+            use_jdbc_metadata_defaults: true
+        hbm2ddl:
+          auto: update
+
+
+  datasource:
+    username: dark
+    password: zalupakonskaya6869
+    url: jdbc:mysql://77.232.37.111:3306/products
+    driver-class-name: com.mysql.cj.jdbc.Driver
