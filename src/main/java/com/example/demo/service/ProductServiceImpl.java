@@ -23,7 +23,6 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
     private final Apache apache;
     private final ProductRepo productRepo;
-
     private final Notification notification;
 
     public ProductServiceImpl(Apache apache,
@@ -40,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-//    @Scheduled(fixedRate = 1800000)
+    @Scheduled(fixedRate = 900000)
     public void updateBase() {
         log.info("Обновление базы данных и проверка цен");
         // Получаем данные из API
@@ -70,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void createTempFile() {
-        List<Product> list = getProducts();
+        List<Product> list = test();
         String csvFile = "C://ssh/products.csv";
         BufferedWriter writer = null;
         CSVPrinter printer = null;
@@ -78,21 +77,23 @@ public class ProductServiceImpl implements ProductService {
             writer = Files.newBufferedWriter(Paths.get(csvFile));
             printer = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader(
                     "Артикул",
-                    "Артикул модификации",
                     "Наименование",
                     "Цена",
                     "Закупочная цена",
-                    "Количество",
-                    "Размер",
                     "Цвет",
-                    "Фото модификации",
-                    "Вес в кг",
-                    "Размеры",
-                    "Штрихкод",
-                    "URL адрес"
+                    "Описание",
+                    "Картинки"
             ));
             for (Product el : list) {
-                printer.printRecord(el.getNmId(), el.getName(), el.getPrice(), el.getSalePrice(), 10, "-", el.getColor(), 0.48, "0x0x0", el.getNmId(), el.getNmId());
+                StringBuilder sb = new StringBuilder();
+                if (!el.getImages().isEmpty()){
+                    el.getImages().forEach(x -> {
+                        if (!x.getImages().isEmpty()){
+                            sb.append(x.getImages()).append(" ");
+                        }
+                    });
+                }
+                printer.printRecord(el.getNmId(), el.getName(), el.getPrice(), el.getSalePrice(), el.getColor(), el.getDescription(), sb.toString());
             }
             printer.flush();
         } catch (IOException var) {
@@ -108,6 +109,19 @@ public class ProductServiceImpl implements ProductService {
             }
 
         }
+    }
+
+    @Override
+    public List<Product> test() {
+        List<Product> l = apache.get();
+        for (Product p : l) {
+            productRepo.updateDescriptionByNmId(p.getDescription(), p.getNmId());
+        }
+        return apache.getImg(l);
+    }
+
+    @Override
+    public void download() {
     }
 
 
@@ -137,12 +151,11 @@ public class ProductServiceImpl implements ProductService {
             try {
                 productRepo.saveAll(newItems);
                 log.info("Добавлено новых элементов в бд: " + newItems.size());
-                notification.sendMessage("Добавлено новых элементов в бд: " + newItems.size());
                 for (Product el: newItems) {
-                    notification.sendMessage(el.toString());
+                    notification.sendMessage(el.toString(), "https://www.wildberries.ru/catalog/"+ el.getNmId() + "/detail.aspx");
                 }
             } catch (Exception var) {
-                notification.sendMessage("Ошибка добавления новых элементов в бд");
+                notification.sendMessage("Ошибка добавления новых элементов в бд", null);
                 log.error("Ошибка при добавлении новых элементов в бд: " + var.getMessage());
             }
         }
@@ -159,7 +172,7 @@ public class ProductServiceImpl implements ProductService {
                 int dbPrice = dbProduct.getSalePrice();
                 int apiPrice = apiProduct.getSalePrice();
                 if (apiPrice != dbPrice) {
-                    notification.sendMessage(message(dbProduct.getName(), apiPrice, dbPrice, dbProduct.getNmId(), apiPrice < dbPrice));
+                    notification.sendMessage(message(dbProduct.getName(), apiPrice, dbPrice, dbProduct.getNmId(), apiPrice < dbPrice), "https://www.wildberries.ru/catalog/"+ dbProduct.getNmId()+"/detail.aspx");
                     updatePrice(dbProduct, apiPrice);
                 }
             }
@@ -171,7 +184,7 @@ public class ProductServiceImpl implements ProductService {
         try {
             productRepo.save(product);
         } catch (Exception var) {
-            notification.sendMessage("Ошибка при обновлении цены товара с id " + product.getNmId());
+            notification.sendMessage("Ошибка при обновлении цены товара с id " + product.getNmId(), null);
             log.error("Ошибка при обновлении цены товара с id " + product.getNmId() + ": " + var.getMessage());
         }
     }

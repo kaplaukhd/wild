@@ -11,4 +11,7 @@ public interface ProductService {
 
     void createTempFile() throws IOException;
 
+    List<Product>  test();
+
+    void download();
 }

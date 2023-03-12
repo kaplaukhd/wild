@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class Datas {
-    public Model model;
-    public int type;
-    public int mainVersion;
-    public int templateType;
+    private Model model;
+    private int type;
+    private int mainVersion;
+    private int templateType;
 }

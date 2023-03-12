@@ -42,4 +42,9 @@ public class ProductController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @GetMapping("test")
+    public ResponseEntity<List<Product>> test() {
+        return ResponseEntity.ok(service.test());
+    }
+
 }
