@@ -2,9 +2,6 @@ server:
   port: 7054
   servlet:
     context-path: /
-    session:
-      timeout: 21600
-
 spring:
   jpa:
     properties:
@@ -16,7 +13,6 @@ spring:
             use_jdbc_metadata_defaults: true
         hbm2ddl:
           auto: update
-
   datasource:
     username: root
     password: zalupakonskaya6869

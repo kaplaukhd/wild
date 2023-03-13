@@ -131,7 +131,6 @@ public class Apache {
                 Set<Images> images = new LinkedHashSet<>();
                 creating:
                 for (int j = 1; j < 4; j++) {
-                    System.out.println(j);
                     if (artSize == 8) {
                         link = "https://basket-" + s + ".wb.ru/vol" + artS.substring(0, 3) + "/part" + artS.substring(0, 5) + "/" + artS + "/images/big/" + j + ".jpg";
                     } else if (artSize == 9) {

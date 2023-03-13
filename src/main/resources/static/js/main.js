@@ -1,7 +1,7 @@
 window.onload = () => {
     fillProductTable()
 }
-const baseUrl = 'http://77.232.37.111:7054/v1/api/products';
+const baseUrl = 'http://194.58.120.217:7054/v1/api/products';
 
 
 $(document).ready(() => {
@@ -29,10 +29,7 @@ $(document).ready(() => {
                     <td>${element.brand}</td>
                     <td>${element.price}</td>
                     <td>${element.salePrice}</td>
-                    <td>${element.star}</td>
-                    <td>${element.feedbacks}</td>
                     <td>${element.color}</td>
-                    <td>${element.deliveryHours}</td>
                     <td>
                       <a href="${link}" class="btn btn-danger">Перейти</a>
                      </td>

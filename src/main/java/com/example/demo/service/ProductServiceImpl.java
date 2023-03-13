@@ -52,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
         addNewItems(newItems);
         // Сравниваем цены для существующих товаров
         comparePrices(apiData, dbData);
-        log.info("Обновление базы данных и проверка цен завершены");
+        log.info("Обновление базы данных и проверка цен завершены\n\n\n");
     }
 
     private String message(String oldProductName, int currentPrice, int oldPrice, Long id, boolean isDown) {
