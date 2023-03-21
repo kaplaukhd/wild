@@ -24,6 +24,7 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -56,6 +57,7 @@ public class Apache {
             Root root = gson.fromJson(json(new HttpPost(getXiaomiLink(i))), Root.class);
             list.addAll(root.getValue().getData().getModel().getProducts());
         }
+        list.forEach(x -> x.setStatus(ProductStatus.ACTIVE));
         List<com.example.demo.entity.subBrands.Product> subList = subBrand();
         for (com.example.demo.entity.subBrands.Product el : subList) {
             list.add(new Product(el.getId(), el.getName(), el.getBrand(), el.getPriceU() / 100, el.getSalePriceU() / 100, el.getSale(), el.getRating(), el.getFeedbacks(), "", "", -1, ProductStatus.ACTIVE, el.getPromoTextCat(), new HashSet<>()));
@@ -119,7 +121,6 @@ public class Apache {
         }
         return l;
     }
-
 
     public List<Product> getImg(List<Product> products) {
         String link = null;

@@ -22,7 +22,13 @@ $(document).ready(() => {
         .then(response => response.json())
         .then(data => {
             let columnContent = ''
+            let isActive;
             data.forEach(element => {
+                if (element.status === 1) {
+                    isActive = 'Нет в наличии';
+                } else {
+                    isActive = 'В наличии';
+                }
                 let link = 'https://www.wildberries.ru/catalog/' + element.nmId + '/detail.aspx'
                 columnContent += `<tr>
                     <td>${element.name}</td>
@@ -30,13 +36,9 @@ $(document).ready(() => {
                     <td>${element.price}</td>
                     <td>${element.salePrice}</td>
                     <td>${element.color}</td>
+                    <td>${isActive}</td>
                     <td>
-                      <a href="${link}" class="btn btn-danger">Перейти</a>
-                     </td>
-                     <td>
-                        <button type="button" class="btn btn-danger" style="border: black; background-color: " data-bs-toggle="modal"
-                          data-index="${element.id}"  data-bs-target="#modalDelete">Удалить
-                        </button>
+                      <a href="${link}" class="btn btn-primary">Перейти</a>
                      </td>
                 </tr>
                 `

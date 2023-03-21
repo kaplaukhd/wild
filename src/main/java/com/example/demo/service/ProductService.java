@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.dto.ProductResponseDto;
 import com.example.demo.entity.xioami.Product;
 
 import java.io.IOException;
@@ -14,4 +15,6 @@ public interface ProductService {
     List<Product>  test();
 
     void download();
+
+    List<ProductResponseDto> getDto();
 }

@@ -1,5 +1,7 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.entity.dto.ProductResponseDto;
+import com.example.demo.entity.enums.ProductStatus;
 import com.example.demo.entity.xioami.Product;
 import com.example.demo.http.Apache;
 import com.example.demo.notify.Notification;
@@ -34,7 +36,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-//    @Scheduled(fixedRate = 900000)
+    @Scheduled(fixedRate = 900000)
     public void updateBase() {
         log.info("Обновление базы данных и проверка цен");
         // Получаем данные из API
@@ -118,26 +120,52 @@ public class ProductServiceImpl implements ProductService {
     public void download() {
     }
 
+    @Override
+    public List<ProductResponseDto> getDto() {
+        return productRepo.getProductDto();
+    }
+
 
     private List<Product> findNewItems(List<Product> apiProducts, List<Product> dbProducts) {
         List<Product> newProducts = new ArrayList<>();
-
         for (Product apiProduct : apiProducts) {
             boolean productExists = false;
-
             for (Product dbProduct : dbProducts) {
                 if (apiProduct.getNmId().equals(dbProduct.getNmId())) {
                     productExists = true;
                     break;
                 }
             }
-
             if (!productExists) {
                 newProducts.add(apiProduct);
+            } else {
+                apiProduct.setStatus(ProductStatus.ACTIVE);
+                productRepo.save(apiProduct);
             }
         }
-
         return newProducts;
+    }
+
+    @Scheduled(fixedRate = 1800000)
+    private void markInactiveProducts() {
+        List<Product> dbProducts = productRepo.findAll();
+        List<Product> apiProducts = apache.xiaomi();
+        for (Product dbProduct : dbProducts) {
+            if (dbProduct.getStatus() == ProductStatus.ACTIVE) {
+                boolean found = false;
+                for (Product apiProduct : apiProducts) {
+                    if (dbProduct.getNmId().equals(apiProduct.getNmId())) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    dbProduct.setStatus(ProductStatus.DISABLED);
+                    productRepo.save(dbProduct);
+                    notification.sendMessage(dbProduct.toString() + " is now inactive", "https://www.wildberries.ru/catalog/" + dbProduct.getNmId() + "/detail.aspx");
+                }
+            }
+        }
     }
 
     private void addNewItems(List<Product> newItems) {
@@ -145,8 +173,15 @@ public class ProductServiceImpl implements ProductService {
             try {
                 productRepo.saveAll(newItems);
                 log.info("Добавлено новых элементов в бд: " + newItems.size());
-                for (Product el: newItems) {
-                    notification.sendMessage(el.toString(), "https://www.wildberries.ru/catalog/"+ el.getNmId() + "/detail.aspx");
+                for (Product el : newItems) {
+                    // Use the product status to determine the notification message
+                    String message;
+                    if (el.getStatus() == ProductStatus.DISABLED) {
+                        message = "Продукт " + el.getName() + " отсутствует в API";
+                    } else {
+                        message = el.toString();
+                    }
+                    notification.sendMessage(message, "https://www.wildberries.ru/catalog/" + el.getNmId() + "/detail.aspx");
                 }
             } catch (Exception var) {
                 notification.sendMessage("Ошибка добавления новых элементов в бд", null);
@@ -175,6 +210,7 @@ public class ProductServiceImpl implements ProductService {
 
     private void updatePrice(Product product, int newPrice) {
         product.setSalePrice(newPrice);
+        product.setStatus(ProductStatus.ACTIVE);
         try {
             productRepo.save(product);
         } catch (Exception var) {

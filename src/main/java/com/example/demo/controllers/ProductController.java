@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.entity.dto.ProductResponseDto;
 import com.example.demo.entity.xioami.Product;
 import com.example.demo.service.impl.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,8 @@ public class ProductController {
     private final ProductServiceImpl service;
 
     @GetMapping("products")
-    public ResponseEntity<List<Product>> getProducts() {
-        return new ResponseEntity<List<Product>>(service.getProducts(), HttpStatus.OK);
+    public ResponseEntity<List<ProductResponseDto>> getProducts() {
+        return new ResponseEntity<List<ProductResponseDto>>(service.getDto(), HttpStatus.OK);
     }
 
 
