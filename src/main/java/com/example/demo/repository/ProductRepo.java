@@ -28,7 +28,7 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
     void updateProduct(int salePrice, int salePrice1);
 
 
-    @Query("SELECT new com.example.demo.entity.dto.ProductResponseDto(p.name, p.brand, p.price, p.salePrice, p.status) FROM Product p")
+    @Query("SELECT new com.example.demo.entity.dto.ProductResponseDto(p.nmId, p.name, p.brand, p.price, p.salePrice, p.status) FROM Product p")
     List<ProductResponseDto> getProductDto();
 
 }

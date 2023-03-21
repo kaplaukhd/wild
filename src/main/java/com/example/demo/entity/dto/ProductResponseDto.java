@@ -11,6 +11,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProductResponseDto {
+
+    private Long nmId;
     private String name;
     private String brand;
     private int price;

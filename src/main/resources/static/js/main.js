@@ -24,10 +24,10 @@ $(document).ready(() => {
             let columnContent = ''
             let isActive;
             data.forEach(element => {
-                if (element.status === 1) {
-                    isActive = 'Нет в наличии';
+                if (element.status === 'ACTIVE') {
+                    isActive ='В наличии' ;
                 } else {
-                    isActive = 'В наличии';
+                    isActive = 'Нет в наличии';
                 }
                 let link = 'https://www.wildberries.ru/catalog/' + element.nmId + '/detail.aspx'
                 columnContent += `<tr>
