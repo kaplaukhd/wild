@@ -28,6 +28,7 @@ public class MvcConfiguration implements WebMvcConfigurer {
                 .addViewController("/products")
                 .setViewName("index");
     }
+
     @Bean
     public SpringTemplateEngine templateEngine() {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();

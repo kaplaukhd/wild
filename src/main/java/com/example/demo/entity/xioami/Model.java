@@ -3,6 +3,7 @@ package com.example.demo.entity.xioami;
 import lombok.Data;
 
 import java.util.ArrayList;
+
 @Data
 public class Model {
     public String containerClass;

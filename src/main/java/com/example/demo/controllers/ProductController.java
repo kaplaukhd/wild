@@ -1,8 +1,8 @@
 package com.example.demo.controllers;
 
 import com.example.demo.entity.xioami.Product;
-import com.example.demo.service.ProductServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.service.impl.ProductServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,13 +15,9 @@ import java.util.List;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("v1/api/")
+@RequiredArgsConstructor
 public class ProductController {
     private final ProductServiceImpl service;
-
-    @Autowired
-    public ProductController(ProductServiceImpl service) {
-        this.service = service;
-    }
 
     @GetMapping("products")
     public ResponseEntity<List<Product>> getProducts() {

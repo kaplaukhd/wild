@@ -3,7 +3,7 @@ package com.example.demo.entity.xioami.subData;
 import java.util.ArrayList;
 
 @lombok.Data
-public class Data{
+public class Data {
     private int imt_id;
     private int nm_id;
     private String imt_name;

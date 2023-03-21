@@ -1,5 +1,6 @@
 package com.example.demo.http;
 
+import com.example.demo.entity.enums.ProductStatus;
 import com.example.demo.entity.xioami.Images;
 import com.example.demo.entity.xioami.Product;
 import com.example.demo.entity.xioami.Root;
@@ -57,7 +58,7 @@ public class Apache {
         }
         List<com.example.demo.entity.subBrands.Product> subList = subBrand();
         for (com.example.demo.entity.subBrands.Product el : subList) {
-            list.add(new Product(el.getId(), el.getName(), el.getBrand(), el.getPriceU() / 100, el.getSalePriceU() / 100, el.getSale(), el.getRating(), el.getFeedbacks(), "", "", -1, el.getPromoTextCat(), new HashSet<>()));
+            list.add(new Product(el.getId(), el.getName(), el.getBrand(), el.getPriceU() / 100, el.getSalePriceU() / 100, el.getSale(), el.getRating(), el.getFeedbacks(), "", "", -1, ProductStatus.ACTIVE, el.getPromoTextCat(), new HashSet<>()));
         }
         return list;
     }

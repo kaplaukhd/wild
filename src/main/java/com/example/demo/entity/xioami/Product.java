@@ -1,5 +1,6 @@
 package com.example.demo.entity.xioami;
 
+import com.example.demo.entity.enums.ProductStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -30,10 +31,10 @@ public class Product {
     private String color;
     private String description = " ";
     private int deliveryHours;
+    private ProductStatus status;
     private String promoTxt;
     @OneToMany(mappedBy = "images")
     private Set<Images> images = new LinkedHashSet<>();
-
 
 
     @Override

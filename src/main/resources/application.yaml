@@ -14,9 +14,10 @@ spring:
         hbm2ddl:
           auto: update
   datasource:
-    username: root
-    password: zalupakonskaya6869
-    url: jdbc:mysql://194.58.120.217:5555/products
+    username: ${MSQLLOGIN:root}
+    password: ${MSQLPASS:root}
+    url: jdbc:mysql://${MSQLSERVER:localhost}:${MSQLPORT:3306}/products
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
-      max-lifetime: 600000
+      max-lifetime: 1000000
+
