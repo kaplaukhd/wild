@@ -11,10 +11,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProductResponseDto {
-
     private Long nmId;
     private String name;
     private String brand;
+    private String color;
     private int price;
     private int salePrice;
     private ProductStatus status;
