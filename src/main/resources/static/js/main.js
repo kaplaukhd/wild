@@ -3,15 +3,13 @@ window.onload = () => {
 }
 const baseUrl = 'http://194.58.120.217:7054/v1/api/products';
 
-
 $(document).ready(() => {
     document.getElementById("searchInput").addEventListener(
         "input", findProduct
     )
 })
 
-
- function fillProductTable() {
+function fillProductTable() {
     const allUsersTableBody = document.getElementById('allOrderTableBody')
 
     // $('#allProductTable').empty()
@@ -25,7 +23,7 @@ $(document).ready(() => {
             let isActive;
             data.forEach(element => {
                 if (element.status === 'ACTIVE') {
-                    isActive ='В наличии' ;
+                    isActive = 'В наличии';
                 } else {
                     isActive = 'Нет в наличии';
                 }
@@ -35,7 +33,6 @@ $(document).ready(() => {
                     <td>${element.brand}</td>
                     <td>${element.price}</td>
                     <td>${element.salePrice}</td>
-                    <td>${element.color}</td>
                     <td>${isActive}</td>
                     <td>
                       <a href="${link}" class="btn btn-primary">Перейти</a>
@@ -47,7 +44,7 @@ $(document).ready(() => {
         })
 }
 
- function findProduct() {
+function findProduct() {
     const allUsersTableBody = document.getElementById('allOrderTableBody')
     const rows = allUsersTableBody.getElementsByTagName("tr");
     const searchInput = document.getElementById("searchInput").value;

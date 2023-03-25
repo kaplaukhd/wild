@@ -15,8 +15,8 @@ spring:
           auto: update
   datasource:
     username: ${MSQLLOGIN:root}
-    password: ${MSQLPASS:root}
-    url: jdbc:mysql://${MSQLSERVER:localhost:${MSQLPORT:3306}/products
+    password: ${MSQLPASS:4bbak$~X=mcr}
+    url: jdbc:mysql://${MSQLSERVER:34.133.197.241}:${MSQLPORT:3306}/products
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       max-lifetime: 1900000
