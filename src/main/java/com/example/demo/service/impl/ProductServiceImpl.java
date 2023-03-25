@@ -36,7 +36,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Scheduled(fixedRate = 900000)
+//    @Scheduled(fixedRate = 900000)
     public void updateBase() {
         log.info("Обновление базы данных и проверка цен");
         // Получаем данные из API
@@ -146,7 +146,7 @@ public class ProductServiceImpl implements ProductService {
         return newProducts;
     }
 
-    @Scheduled(fixedRate = 1800000)
+//    @Scheduled(fixedRate = 1800000)
     private void markInactiveProducts() {
         List<Product> dbProducts = productRepo.findAll();
         List<Product> apiProducts = apache.xiaomi();
