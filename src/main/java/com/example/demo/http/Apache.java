@@ -25,6 +25,10 @@ public class Apache {
                         .map(link -> restTemplate.getForObject(link, Root.class)).filter(Objects::nonNull)
                         .map(response -> response.getData().getProducts()))
                 .flatMap(Collection::stream)
+                .peek(product -> {
+                    product.setPriceU(product.getPriceU() / 100);
+                    product.setSalePriceU(product.getSalePriceU() / 100);
+                })
                 .collect(Collectors.toList());
     }
 
