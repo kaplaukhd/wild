@@ -68,11 +68,15 @@ public class Notification extends TelegramLongPollingBot {
     }
 
     public void sendProduct(Product product) {
-        sendMessage(product.toString(), String.format("https://www.wildberries.ru/catalog/%s/detail.aspx", product.getId().toString()));
+        String url = String.format("https://www.wildberries.ru/catalog/%s/detail.aspx", product.getId().toString());
+        sendMessage(String.format("""
+
+                Новая цена! 🟢
+
+                %s
+
+                Цена:  %d""", product.getName(), product.getSalePriceU()), url);
+
     }
 
-    public void message(String oldProductName, int currentPrice, int oldPrice, boolean isDown, Long id) {
-        String result = isDown ? "🟢" : "\uD83D\uDD34";
-        sendMessage(String.format("\n\nНовая цена! %s\n\n%s\n\nЦена: %d --> %d", result, oldProductName, oldPrice, currentPrice), String.format("https://www.wildberries.ru/catalog/%s/detail.aspx", id.toString()));
-    }
 }

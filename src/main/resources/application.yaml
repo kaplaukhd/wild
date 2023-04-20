@@ -13,7 +13,7 @@ spring:
             use_jdbc_metadata_defaults: true
         hbm2ddl:
           auto: update
-    show-sql: true
+    show-sql: false
   datasource:
     username: ${MSQL_LOGIN:root}
     password: ${MSQL_PASS:root}

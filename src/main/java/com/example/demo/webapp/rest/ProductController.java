@@ -24,27 +24,8 @@ public class ProductController {
         return new ResponseEntity<>(productFacade.getDto(), HttpStatus.OK);
     }
 
-    @GetMapping("products/page/{page}")
-    public Page<ProductResponseDto> getSortedProducts(@PathVariable int page,
-                                                      @RequestParam(defaultValue = "50",
-                                                                    required = false) int countItems) {
-        return productFacade.getPageableDto(PageRequest.of(page, countItems));
-    }
-
-    @GetMapping("products/page/{page}/find")
-    public Page<ProductResponseDto> findProduct(@PathVariable int page,
-                                                      @RequestParam(defaultValue = "50",
-                                                              required = false) int countItems,
-                                                @RequestParam(required = false) String name) {
-        return productFacade.findProduct(PageRequest.of(page -1, countItems), name);
-    }
 
 
-    @GetMapping("check")
-    public ResponseEntity<HttpStatus> checkProducts() {
-        productFacade.updateBase();
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
 
 
 }

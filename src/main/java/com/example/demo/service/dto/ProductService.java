@@ -9,7 +9,4 @@ import java.util.List;
 public interface ProductService {
     List<ProductResponseDto> getDto();
 
-    Page<ProductResponseDto> getPageableDto(Pageable pageable);
-
-    Page<ProductResponseDto>  findProduct(Pageable pageable, String name);
 }
