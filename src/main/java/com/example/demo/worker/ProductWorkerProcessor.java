@@ -28,13 +28,15 @@ public class ProductWorkerProcessor {
                         .noneMatch(dbProduct -> apiProduct.getId().equals(dbProduct.getId())))
                 .toList();
 
+
         List<Product> disabledItems = db
                 .stream()
                 .filter(dbProduct -> api
                         .stream()
-                        .noneMatch(apiProduct -> dbProduct.getId().equals(apiProduct.getId())
-                                && dbProduct.getStatus() != ProductStatus.DISABLED))
-                .peek(dis -> dis.setStatus(ProductStatus.DISABLED)).toList();
+                        .noneMatch(apiProduct -> dbProduct.getId().equals(apiProduct.getId()))
+                        && dbProduct.getStatus() == ProductStatus.ACTIVE)
+                .peek(dis -> dis.setStatus(ProductStatus.DISABLED))
+                .toList();
 
 
         List<Product> activeItems = api
@@ -57,13 +59,17 @@ public class ProductWorkerProcessor {
 
 
         List<Product> done = new ArrayList<>(newItems);
-        log.info("Новых элементов в бд {}", done.size());
-
         done.addAll(activeItems);
         done.addAll(disabledItems);
         done.addAll(lowPriceItems);
 
+        log.info("Новых элементов в бд {}", newItems.size());
+        log.info("размер activeItems {}", activeItems.size());
+        log.info("размер disabledItems {}", disabledItems.size());
+        log.info("размер lowPriceItems {}", lowPriceItems.size());
+        log.info("размер newItems {}", newItems.size());
         log.info("Всего обновлено элементов {}\n\n\n", done.size());
+
 
         CompletableFuture.runAsync(() -> notification.sendProduct(lowPriceItems));
 
