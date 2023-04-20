@@ -1,7 +1,7 @@
 window.onload = () => {
     fillProductTable()
 }
-const baseUrl = 'http://194.58.120.217:7054/v1/api/products';
+const baseUrl = 'http://194.67.68.95:7054/v1/api/products';
 
 $(document).ready(() => {
     document.getElementById("searchInput").addEventListener(

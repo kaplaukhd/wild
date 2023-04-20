@@ -1,5 +1,6 @@
 package com.example.demo.notify;
 
+import com.example.demo.entities.entity.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -61,4 +62,21 @@ public class Notification extends TelegramLongPollingBot {
             log.error(var.getMessage());
         }
     }
+
+    public void sendProduct(List<Product> products) {
+        products.forEach(this::sendProduct);
+    }
+
+    public void sendProduct(Product product) {
+        String url = String.format("https://www.wildberries.ru/catalog/%s/detail.aspx", product.getId().toString());
+        sendMessage(String.format("""
+
+                Новая цена! 🟢
+
+                %s
+
+                Цена:  %d""", product.getName(), product.getSalePriceU()), url);
+
+    }
+
 }
