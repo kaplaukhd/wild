@@ -40,7 +40,8 @@ public class Product {
     private int priceU;
     @Column(name = "sale_price")
     private int salePriceU;
-
+//    @Column(name = "old_sale_price")
+//    private int oldPrice;
     private int logisticsCost;
     private int saleConditions;
     private int pics;
@@ -52,14 +53,10 @@ public class Product {
     private int panelPromoId;
     @Column(name = "promoTxt")
     private String promoTextCat;
-
-
     @Column(name = "status")
     private ProductStatus status = ProductStatus.ACTIVE;
-
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private Set<Images> images = new LinkedHashSet<>();
-
 
     @Override
     public String toString() {

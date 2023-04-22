@@ -5,6 +5,8 @@ import com.example.demo.entities.enums.ProductStatus;
 import com.example.demo.notify.Notification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ import java.util.concurrent.CompletableFuture;
 public class ProductWorkerProcessor {
 
     private final Notification notification;
+
+    private static final Logger LOGGER = LogManager.getLogger(ProductWorkerProcessor.class);
 
     public List<Product> work(List<Product> db, List<Product> api) {
         log.info("Обновление базы данных и проверка цен");
@@ -48,7 +52,6 @@ public class ProductWorkerProcessor {
                 .peek(active -> active.setStatus(ProductStatus.ACTIVE))
                 .toList();
 
-
         List<Product> lowPriceItems = api
                 .stream()
                 .filter(apiProduct -> db
@@ -63,13 +66,20 @@ public class ProductWorkerProcessor {
         done.addAll(disabledItems);
         done.addAll(lowPriceItems);
 
-        log.info("Новых элементов в бд {}", newItems.size());
-        log.info("размер activeItems {}", activeItems.size());
-        log.info("размер disabledItems {}", disabledItems.size());
-        log.info("размер lowPriceItems {}", lowPriceItems.size());
-        log.info("размер newItems {}", newItems.size());
-        log.info("Всего обновлено элементов {}\n\n\n", done.size());
+        LOGGER.info("""
+                        
+                        размер activeItems {}
+                        размер disabledItems {}
+                        размер lowPriceItems {}
+                        размер newItems {}
+                        Всего обновлено элементов {}
 
+                        """,
+                activeItems.size(),
+                disabledItems.size(),
+                lowPriceItems.size(),
+                newItems.size(),
+                done.size());
 
         CompletableFuture.runAsync(() -> notification.sendProduct(lowPriceItems));
 

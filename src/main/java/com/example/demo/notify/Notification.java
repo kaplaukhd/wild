@@ -31,7 +31,10 @@ public class Notification extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-
+        if (update.hasMessage() && update.getMessage().hasText()) {
+            switch (update.getMessage().getText()) {
+            }
+        }
     }
 
     public void sendMessage(String message, String url) {

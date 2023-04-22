@@ -8,19 +8,25 @@
 		<version>3.0.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+
 	<groupId>com.example</groupId>
 	<artifactId>demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>demo</name>
-	<description>Demo project for Spring Boot</description>
+	<name>Wild</name>
+	<description>Wildberries parser</description>
+
+
 	<properties>
 		<java.version>17</java.version>
 		<mapstruct.version>1.4.2.Final</mapstruct.version>
 		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 	</properties>
-
-
 	<dependencies>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.14.1</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
@@ -119,9 +125,6 @@
 		</dependency>
 
 	</dependencies>
-
-
-
 	<build>
 		<plugins>
 			<plugin>
