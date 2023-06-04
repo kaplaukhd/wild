@@ -1,5 +1,6 @@
-package com.example.demo.entities.dto.response;
+package com.example.demo.entities.dto;
 
+import com.example.demo.entities.enums.ProductPriceStatus;
 import com.example.demo.entities.enums.ProductStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,10 +13,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProductResponseDto {
-    private Long nmId;
+    private Long id;
     private String name;
     private String brand;
     private int price;
     private int salePrice;
     private ProductStatus status;
+    private ProductPriceStatus priceStatus;
 }

@@ -1,4 +1,4 @@
-package com.example.demo.entities.entity;
+package com.example.demo.entities.entity.search;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

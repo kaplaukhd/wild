@@ -1,6 +1,6 @@
 package com.example.demo.webapp.rest.worker;
 
-import com.example.demo.webapp.facade.product.ProductFacade;
+import com.example.demo.webapp.facade.ProductFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,6 @@ public class ProductWorkController {
 
 
     private final ProductFacade productFacade;
-
 
     @GetMapping("check")
     public ResponseEntity<HttpStatus> checkProducts() {

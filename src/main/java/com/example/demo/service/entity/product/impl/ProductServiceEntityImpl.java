@@ -1,12 +1,14 @@
 package com.example.demo.service.entity.product.impl;
 
-import com.example.demo.entities.entity.Product;
+import com.example.demo.entities.entity.product.SingleProduct;
+import com.example.demo.entities.entity.search.Product;
 import com.example.demo.http.Apache;
 import com.example.demo.repository.ProductRepository;
 import com.example.demo.service.entity.product.ProductServiceEntity;
 import com.example.demo.service.entity.brands.BrandsService;
 import com.example.demo.worker.ProductWorkerProcessor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +43,11 @@ public class ProductServiceEntityImpl implements ProductServiceEntity {
     @Override
     public List<Product> findAll() {
         return productRepository.findAll();
+    }
+
+    @Override
+    @Cacheable(value = "product", key = "#id")
+    public SingleProduct getSingleProduct(Long id) {
+        return apache.getJson(id);
     }
 }

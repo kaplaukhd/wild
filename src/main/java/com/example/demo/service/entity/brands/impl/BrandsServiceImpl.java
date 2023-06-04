@@ -1,6 +1,6 @@
 package com.example.demo.service.entity.brands.impl;
 
-import com.example.demo.entities.entity.Brands;
+import com.example.demo.entities.entity.search.Brands;
 import com.example.demo.repository.BrandsRepository;
 import com.example.demo.service.entity.brands.BrandsService;
 import lombok.RequiredArgsConstructor;

@@ -1,5 +1,6 @@
-package com.example.demo.entities.entity;
+package com.example.demo.entities.entity.search;
 
+import com.example.demo.entities.enums.ProductPriceStatus;
 import com.example.demo.entities.enums.ProductStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -40,8 +41,8 @@ public class Product {
     private int priceU;
     @Column(name = "sale_price")
     private int salePriceU;
-//    @Column(name = "old_sale_price")
-//    private int oldPrice;
+    @Column(name = "old_sale_price")
+    private Integer oldPrice;
     private int logisticsCost;
     private int saleConditions;
     private int pics;
@@ -55,6 +56,8 @@ public class Product {
     private String promoTextCat;
     @Column(name = "status")
     private ProductStatus status = ProductStatus.ACTIVE;
+    @Column(name = "price_status")
+    private ProductPriceStatus priceStatus = ProductPriceStatus.DEFAULT_PRICE;
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private Set<Images> images = new LinkedHashSet<>();
 

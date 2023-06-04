@@ -1,7 +1,8 @@
 package com.example.demo.notify;
 
-import com.example.demo.entities.entity.Product;
+import com.example.demo.entities.entity.search.Product;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -11,29 +12,37 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.List;
+import java.util.Map;
 
 @Component
 @Slf4j
 public class Notification extends TelegramLongPollingBot {
 
-    private static final String chatId = "-1001886045503";
+    @Value(value = "${TELEGRAM_CHATID}")
+    private  String chatId;
 
+    @Value(value = "${TELEGRAM_USERNAME}")
+    private  String botUsername;
+
+    @Value(value = "${TELEGRAM_TOKEN}")
+    private String token;
 
     @Override
     public String getBotUsername() {
-        return "Wb_checkers_bot";
+        return botUsername;
     }
 
     @Override
     public String getBotToken() {
-        return "6068122340:AAHVGJ4QNKpC5nJtvBX0oFSXhURUZE3mY54";
+        return token;
     }
 
     @Override
     public void onUpdateReceived(Update update) {
-        if (update.hasMessage() && update.getMessage().hasText()) {
-            switch (update.getMessage().getText()) {
-            }
+        try {
+            execute(new SendMessage(update.getMessage().getChatId().toString(), "За доступом к парсеру\n\n@fedukoneeevol"));
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -43,7 +52,7 @@ public class Notification extends TelegramLongPollingBot {
             InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
             InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
             inlineKeyboardButton.setUrl(url);
-            inlineKeyboardButton.setText("Трахнуть");
+            inlineKeyboardButton.setText("Открыть");
             List<InlineKeyboardButton> list = List.of(inlineKeyboardButton);
             List<List<InlineKeyboardButton>> btns = List.of(list);
             inlineKeyboardMarkup.setKeyboard(btns);
@@ -66,20 +75,22 @@ public class Notification extends TelegramLongPollingBot {
         }
     }
 
-    public void sendProduct(List<Product> products) {
+    public void sendProduct(Map<Boolean, List<Product>> products) {
         products.forEach(this::sendProduct);
     }
 
-    public void sendProduct(Product product) {
-        String url = String.format("https://www.wildberries.ru/catalog/%s/detail.aspx", product.getId().toString());
-        sendMessage(String.format("""
+    public void sendProduct(Boolean kind, List<Product> products) {
+        String vector = kind ?  "\uD83D\uDD34" : "🟢";
 
-                Новая цена! 🟢
+        products.forEach(x -> sendMessage(
+                String.format("""
+
+                Новая цена! %s\s
 
                 %s
 
-                Цена:  %d""", product.getName(), product.getSalePriceU()), url);
-
+                Цена:  %d --> %d""", vector, x.getName(), x.getOldPrice(), x.getSalePriceU()), String.format("https://www.wildberries.ru/catalog/%s/detail.aspx", x.getId().toString())
+        ));
     }
 
 }

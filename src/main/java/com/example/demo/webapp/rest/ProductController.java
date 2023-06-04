@@ -1,11 +1,9 @@
 package com.example.demo.webapp.rest;
 
-import com.example.demo.entities.dto.response.ProductResponseDto;
-import com.example.demo.webapp.facade.product.ProductFacade;
+import com.example.demo.entities.dto.ProductResponseDto;
+import com.example.demo.entities.entity.product.SingleProduct;
+import com.example.demo.webapp.facade.ProductFacade;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,11 +19,11 @@ public class ProductController {
 
     @GetMapping("products")
     public ResponseEntity<List<ProductResponseDto>> getProducts() {
-        return new ResponseEntity<>(productFacade.getDto(), HttpStatus.OK);
+        return ResponseEntity.ok(productFacade.getDto());
     }
 
-
-
-
-
+    @GetMapping("products/{id}")
+    public ResponseEntity<SingleProduct> getProducts(@PathVariable Long id) {
+        return ResponseEntity.ok(productFacade.getSingleProduct(id));
+    }
 }
