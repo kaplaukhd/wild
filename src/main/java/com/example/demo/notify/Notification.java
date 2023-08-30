@@ -75,6 +75,15 @@ public class Notification extends TelegramLongPollingBot {
         }
     }
 
+    public void sendMessage(String message) {
+        SendMessage sendMessage = new SendMessage("956948349", message);
+        try {
+            execute(sendMessage);
+        } catch (TelegramApiException var) {
+            log.error(var.getMessage());
+        }
+    }
+
     public void sendProduct(Map<Boolean, List<Product>> products) {
         products.forEach(this::sendProduct);
     }

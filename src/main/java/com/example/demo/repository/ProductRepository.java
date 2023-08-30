@@ -36,6 +36,15 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<ProductResponseDto> findAllPageable(Pageable pageable);
 
 
+    @Query("SELECT new com.example.demo.entities.dto.ProductResponseDto(p.id, " +
+            "p.name," +
+            " p.brand, " +
+            "p.priceU," +
+            " p.salePriceU," +
+            " p.status," +
+            " p.priceStatus) FROM Product p where p.subjectId in :subjectIds")
+    List<ProductResponseDto> getProductsBySubjectIds(@Param(value = "subjectIds") List<Integer> subjectId);
+
     List<Product> findAllByNameContainingIgnoreCase(String name);
 
     @Modifying

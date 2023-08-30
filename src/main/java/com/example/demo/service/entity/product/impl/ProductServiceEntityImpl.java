@@ -48,6 +48,6 @@ public class ProductServiceEntityImpl implements ProductServiceEntity {
     @Override
     @Cacheable(value = "product", key = "#id")
     public SingleProduct getSingleProduct(Long id) {
-        return apache.getJson(id);
+        return apache.json(id);
     }
 }

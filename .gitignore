@@ -18,7 +18,7 @@ target/
 
 ### USER ###
 dev/
-
+DOCKER/
 
 ### IntelliJ IDEA ###
 .idea
@@ -38,3 +38,4 @@ build/
 
 ### VS Code ###
 .vscode/
+

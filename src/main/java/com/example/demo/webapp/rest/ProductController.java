@@ -18,12 +18,13 @@ public class ProductController {
     private final ProductFacade productFacade;
 
     @GetMapping("products")
-    public ResponseEntity<List<ProductResponseDto>> getProducts() {
-        return ResponseEntity.ok(productFacade.getDto());
+    public ResponseEntity<List<ProductResponseDto>> getProducts(@RequestParam(required = false) List<Integer> subjectIds) {
+        return ResponseEntity.ok(productFacade.getProducts(subjectIds));
     }
 
     @GetMapping("products/{id}")
     public ResponseEntity<SingleProduct> getProducts(@PathVariable Long id) {
         return ResponseEntity.ok(productFacade.getSingleProduct(id));
     }
+
 }

@@ -1,6 +1,7 @@
 package com.example.demo.service.dto.impl;
 
 import com.example.demo.entities.dto.ProductResponseDto;
+import com.example.demo.entities.entity.search.Product;
 import com.example.demo.repository.ProductRepository;
 import com.example.demo.service.dto.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,11 @@ public class ProductServiceImpl implements ProductService {
     @Scheduled(cron = "0 0 */3 * * *")
     public void updateDto() {
         productRepo.getProductDto();
+    }
+
+    @Override
+    public List<ProductResponseDto> getProductsByCategoriesId(List<Integer> categories) {
+        return productRepo.getProductsBySubjectIds(categories);
     }
 
 

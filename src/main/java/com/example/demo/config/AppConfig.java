@@ -1,11 +1,16 @@
 package com.example.demo.config;
 
+import com.example.demo.notify.Notification;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -18,7 +23,10 @@ import java.util.List;
 
 @Configuration
 @EnableScheduling
-public class AppConfig {
+@RequiredArgsConstructor
+public class AppConfig implements ApplicationListener<ContextClosedEvent> {
+
+    private final Notification notification;
 
     @Bean
     public RestTemplate restTemplate() {
@@ -32,6 +40,7 @@ public class AppConfig {
 
         return  restTemplate;
     }
+
     @Bean
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
         ObjectMapper mapper = new ObjectMapper();
@@ -50,4 +59,8 @@ public class AppConfig {
         return mapper;
     }
 
+    @Override
+    public void onApplicationEvent(@NonNull ContextClosedEvent event) {
+        notification.sendMessage("Бот завершил работу");
+    }
 }

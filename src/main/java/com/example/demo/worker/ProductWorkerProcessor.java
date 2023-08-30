@@ -1,9 +1,11 @@
 package com.example.demo.worker;
 
+import com.example.demo.entities.entity.pepper.PepperProduct;
 import com.example.demo.entities.enums.ProductPriceStatus;
 import com.example.demo.entities.enums.ProductStatus;
 import com.example.demo.entities.entity.search.Product;
 import com.example.demo.notify.Notification;
+import com.example.demo.service.entity.pepper.PepperService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -119,9 +121,38 @@ public class ProductWorkerProcessor {
                 newItems.size(),
                 done.size());
 
-        CompletableFuture.runAsync(() -> notification.sendProduct(notify));
+//        CompletableFuture.runAsync(() -> notification.sendProduct(notify));
 
         return done;
+    }
+
+    public List<PepperProduct> pepperWork(List<PepperProduct> db, List<PepperProduct> api) {
+
+        log.info("Обновление базы данных и проверка цен [PEPPER]");
+
+        List<PepperProduct> list = new ArrayList<>();
+
+        List<PepperProduct> newItems = api
+                .stream()
+                .filter(apiProduct -> db
+                        .stream()
+                        .noneMatch(dbProduct -> apiProduct.getId().equals(dbProduct.getId())))
+                .toList();
+
+        List<PepperProduct> disabledItems = api
+                .stream()
+                .filter(x -> !x.isStatus())
+                .toList();
+
+        newItems.forEach(x -> notification.sendMessage("[PEPPER] Новый элемент\n" +
+                x.getTitle() + "\n" +
+                x.getImage() + "\n" +
+                x.getPrice() + "\n" +
+                x.getLink()));
+
+        list.addAll(newItems);
+        list.addAll(disabledItems);
+        return list;
     }
 
 }

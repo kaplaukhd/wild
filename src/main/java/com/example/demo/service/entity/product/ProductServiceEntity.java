@@ -15,4 +15,6 @@ public interface ProductServiceEntity {
     List<Product> findAll();
 
     SingleProduct getSingleProduct(Long id);
+
+
 }

@@ -1,9 +1,5 @@
 package com.example.demo.entities.entity.product;
 
-import lombok.Getter;
+public record Option(String name, String value) {
 
-@Getter
-public class Option {
-    public String name;
-    public String value;
 }
