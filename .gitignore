@@ -18,13 +18,14 @@ target/
 
 ### USER ###
 dev/
-
+DOCKER/
 
 ### IntelliJ IDEA ###
 .idea
 *.iws
 *.iml
 *.ipr
+.github
 
 ### NetBeans ###
 /nbproject/private/
@@ -38,3 +39,4 @@ build/
 
 ### VS Code ###
 .vscode/
+

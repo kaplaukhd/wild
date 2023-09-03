@@ -1,35 +1,48 @@
 package com.example.demo.config;
 
+import com.example.demo.notify.Notification;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @Configuration
-public class AppConfig {
+@EnableScheduling
+@RequiredArgsConstructor
+public class AppConfig implements ApplicationListener<ContextClosedEvent> {
+
+    private final Notification notification;
 
     @Bean
     public RestTemplate restTemplate() {
-        RestTemplate restTemplate = new RestTemplate();
-
+        CustomRestTemplate restTemplate = new CustomRestTemplate();
         List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
+        converter
+                .setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
         messageConverters.add(converter);
+        messageConverters.add( 0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
         restTemplate.setMessageConverters(messageConverters);
-
         return  restTemplate;
     }
+
     @Bean
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
         ObjectMapper mapper = new ObjectMapper();
@@ -48,4 +61,8 @@ public class AppConfig {
         return mapper;
     }
 
+    @Override
+    public void onApplicationEvent(@NonNull ContextClosedEvent event) {
+        notification.sendMessage("Бот завершил работу");
+    }
 }

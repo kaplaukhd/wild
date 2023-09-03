@@ -1,6 +1,6 @@
 package com.example.demo.service.entity.brands;
 
-import com.example.demo.entities.entity.Brands;
+import com.example.demo.entities.entity.search.Brands;
 
 import java.util.List;
 

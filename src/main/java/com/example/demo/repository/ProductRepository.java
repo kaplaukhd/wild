@@ -1,7 +1,7 @@
 package com.example.demo.repository;
 
-import com.example.demo.entities.dto.response.ProductResponseDto;
-import com.example.demo.entities.entity.Product;
+import com.example.demo.entities.dto.ProductResponseDto;
+import com.example.demo.entities.entity.search.Product;
 import com.example.demo.entities.enums.ProductStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,13 +16,34 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query("SELECT new com.example.demo.entities.dto.response.ProductResponseDto(p.id, p.name, p.brand, p.priceU, p.salePriceU, p.status) FROM Product p")
+    @Query("SELECT new com.example.demo.entities.dto.ProductResponseDto(p.id, " +
+            "p.name," +
+            " p.brand," +
+            " p.priceU, " +
+            "p.salePriceU," +
+            " p.status," +
+            " p.priceStatus) FROM Product p order by p.status ASC")
     List<ProductResponseDto> getProductDto();
 
 
-    @Query("SELECT new com.example.demo.entities.dto.response.ProductResponseDto(p.id, p.name, p.brand, p.priceU, p.salePriceU, p.status) FROM Product p")
+    @Query("SELECT new com.example.demo.entities.dto.ProductResponseDto(p.id, " +
+            "p.name," +
+            " p.brand, " +
+            "p.priceU," +
+            " p.salePriceU," +
+            " p.status," +
+            " p.priceStatus) FROM Product p")
     Page<ProductResponseDto> findAllPageable(Pageable pageable);
 
+
+    @Query("SELECT new com.example.demo.entities.dto.ProductResponseDto(p.id, " +
+            "p.name," +
+            " p.brand, " +
+            "p.priceU," +
+            " p.salePriceU," +
+            " p.status," +
+            " p.priceStatus) FROM Product p where p.subjectId in :subjectIds")
+    List<ProductResponseDto> getProductsBySubjectIds(@Param(value = "subjectIds") List<Integer> subjectId);
 
     List<Product> findAllByNameContainingIgnoreCase(String name);
 
