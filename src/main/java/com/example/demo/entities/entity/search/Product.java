@@ -16,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Product {
+public class Product   {
     private int __sort;
     private int ksort;
     private int time1;

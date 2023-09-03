@@ -1,5 +1,6 @@
 package com.example.demo.entities.entity.pepper;
 
+import com.example.demo.entities.enums.ProductStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.*;
@@ -14,8 +15,9 @@ public class PepperProduct {
     @Id
     private Long id;
     private String title;
-    private String price;
+    private int price;
     private String image;
     private String link;
-    private boolean status;
+    private ProductStatus status;
+    private String pepperLink;
 }

@@ -6,8 +6,9 @@ import com.example.demo.http.Apache;
 import com.example.demo.repository.ProductRepository;
 import com.example.demo.service.entity.product.ProductServiceEntity;
 import com.example.demo.service.entity.brands.BrandsService;
-import com.example.demo.worker.ProductWorkerProcessor;
+import com.example.demo.worker.wild.WildWorkProcessor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -16,17 +17,20 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class ProductServiceEntityImpl implements ProductServiceEntity {
 
     private final Apache apache;
     private final ProductRepository productRepository;
     private final BrandsService brandsService;
-    private final ProductWorkerProcessor processor;
+    private final WildWorkProcessor processor;
 
     @Override
     @Scheduled(fixedRate = 900000)
     public void updateBase() {
-        List<Product> updatedList = processor.work(findAll(), apache.json(brandsService.findAll()));
+
+        List<Product> updatedList = processor
+                .work(findAll(), apache.json(brandsService.findAll()));
         saveAll(updatedList);
     }
 
@@ -48,6 +52,6 @@ public class ProductServiceEntityImpl implements ProductServiceEntity {
     @Override
     @Cacheable(value = "product", key = "#id")
     public SingleProduct getSingleProduct(Long id) {
-        return apache.json(id);
+        return apache.json(id).orElse(new SingleProduct());
     }
 }

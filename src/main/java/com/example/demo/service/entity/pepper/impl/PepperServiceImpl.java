@@ -4,7 +4,8 @@ import com.example.demo.entities.entity.pepper.PepperProduct;
 import com.example.demo.http.Apache;
 import com.example.demo.repository.PepperRepository;
 import com.example.demo.service.entity.pepper.PepperService;
-import com.example.demo.worker.ProductWorkerProcessor;
+import com.example.demo.worker.pepper.PepperWorkProcessor;
+import com.example.demo.worker.wild.WildWorkProcessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,7 +20,7 @@ public class PepperServiceImpl  implements PepperService {
 
     private final PepperRepository pepperRepository;
     private final Apache apache;
-    private final ProductWorkerProcessor processor;
+    private final PepperWorkProcessor processor;
 
 
     @Override
@@ -43,7 +44,8 @@ public class PepperServiceImpl  implements PepperService {
     @Override
     @Scheduled(fixedRate = 900000)
     public void updateBase() {
-        List<PepperProduct> updatedList = processor.pepperWork(pepperRepository.findAll(), apache.pepper());
+        List<PepperProduct> updatedList = processor
+                .pepperWork(pepperRepository.findAll(), apache.pepper());
         pepperRepository.saveAll(updatedList);
     }
 

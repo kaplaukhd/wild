@@ -25,6 +25,7 @@ DOCKER/
 *.iws
 *.iml
 *.ipr
+.github
 
 ### NetBeans ###
 /nbproject/private/

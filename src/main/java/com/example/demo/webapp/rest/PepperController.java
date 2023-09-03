@@ -18,7 +18,6 @@ public class PepperController {
 
     private final PepperFacade facade;
 
-
     @GetMapping("pepper")
     public ResponseEntity<List<PepperProduct>> getAllPepper() {
         return ResponseEntity.ok(facade.getAllPepper());

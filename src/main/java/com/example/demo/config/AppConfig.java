@@ -13,10 +13,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,14 +32,14 @@ public class AppConfig implements ApplicationListener<ContextClosedEvent> {
 
     @Bean
     public RestTemplate restTemplate() {
-        RestTemplate restTemplate = new RestTemplate();
-
+        CustomRestTemplate restTemplate = new CustomRestTemplate();
         List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
+        converter
+                .setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
         messageConverters.add(converter);
+        messageConverters.add( 0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
         restTemplate.setMessageConverters(messageConverters);
-
         return  restTemplate;
     }
 
